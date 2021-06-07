@@ -1,11 +1,12 @@
 # 3D Multi-Object Tracker
 This project is developed for tracking multiple objects in 3D scene, and is a simplified
-implementation of [paper](https://ieeexplore.ieee.org/abstract/document/9352500).
+implementation of [paper](https://ieeexplore.ieee.org/abstract/document/9352500). The visualization code is from
+[here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer).
+![](./doc/demo.gif)
 ## Features
 * Fast: currently, the codes can achieve 700 FPS using only CPU (not include data op), can perform tracking 
 on all kitti sequence in several seconds. 
-* Support both online and global implementation.  
-## Design pattern
+* Support both online and global implementation. 
 The overall framework of design is as shown below:
 ![](./doc/framework.jpg)
 
@@ -76,3 +77,6 @@ python3
 numpy
 opencv
 ```
+
+## Notes
+The evaluation codes are copied from [Kitti](https://github.com/JonathonLuiten/TrackEval).
