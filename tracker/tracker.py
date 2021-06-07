@@ -1,18 +1,23 @@
 from .trajectory import Trajectory
 from .config import config
+from .box_op import *
 import numpy as np
 
 class Tracker3D:
-    def __init__(self,tracking_bb_size=True,
-                    tracking_features=False,
+    def __init__(self,tracking_features=False,
                     bb_as_features=False,
                     box_type='Kitti'):
-
+        """
+        initialize the the 3D tracker
+        Args:
+            tracking_features: bool, if tracking the features
+            bb_as_features: bool, if tracking the bbs
+            box_type: str, box type, available box type "OpenPCDet", "Kitti", "Waymo"
+        """
         self.current_timestamp = None
         self.current_pose = None
         self.current_bbs = None
         self.current_features = None
-        self.tracking_bb_size = tracking_bb_size
         self.tracking_features = tracking_features
         self.bb_as_features = bb_as_features
         self.box_type = box_type
@@ -22,15 +27,26 @@ class Tracker3D:
         self.active_trajectories = {}
         self.dead_trajectories = {}
 
-    def tracking(self,bbs = None,
+    def tracking(self,bbs_3D = None,
                  features = None,
                  scores = None,
                  pose = None,
                  timestamp = None
                  ):
+        """
+        tracking the objects at the given timestamp
+        Args:
+            bbs: array(N,7) or array(N，7*k), 3D bounding boxes or 3D tracklets
+                for tracklets, the boxes should be organized to [[box_t; box_t-1; box_t-2;...],...]
+            features: array(N,k), the features of boxes or tracklets
+            scores: array(N,), the detection score of boxes or tracklets
+            pose: array(4,4), pose matrix to global scene
+            timestamp: int, current timestamp, note that the timestamp should be consecutive
 
-
-        self.current_bbs = bbs
+        Returns:
+            ids: array(N,), the assigned IDs for inputs
+        """
+        self.current_bbs = bbs_3D
         self.current_features = features
         self.current_scores = scores
         self.current_pose = pose
@@ -38,78 +54,27 @@ class Tracker3D:
 
         self.trajectores_prediction()
 
-        if bbs is None:
+        if self.current_bbs is None:
             return np.zeros(shape=(0))
         else:
-            if len(bbs) == 0:
+            if len(self.current_bbs) == 0:
                 return np.zeros(shape=(0))
 
             else:
-                self.current_bbs = self.convert_bbs_type(bbs,self.box_type)
-                self.current_bbs = self.register_bbs(self.current_bbs,self.current_pose)
+                self.current_bbs = convert_bbs_type(self.current_bbs,self.box_type)
+                self.current_bbs = register_bbs(self.current_bbs,self.current_pose)
                 ids = self.association()
                 self.trajectories_update_init(ids)
 
-                return ids
-
-    def convert_bbs_type(self,boxes,input_box_type):
-
-        boxes = np.array(boxes)
-
-        assert input_box_type in ["Kitti", "OpenPCDet", "Waymo"], 'unsupported input box type!'
-
-        if input_box_type in ["OpenPCDet", "Waymo"]:
-            return boxes
-
-        if input_box_type == "Kitti":  # (h,w,l,x,y,z,yaw) -> (x,y,z,l,w,h,yaw)
-
-            t_id = boxes.shape[1]//7
-            new_boxes = np.zeros(shape=boxes.shape)
-            new_boxes[:, :] = boxes[:, :]
-            for i in range(t_id):
-                b_id = i*7
-                new_boxes[:, b_id+0:b_id+3] = boxes[:, b_id+3:b_id+6]
-                new_boxes[:, b_id+3] = boxes[:, b_id+2]
-                new_boxes[:, b_id+4] = boxes[:, b_id+1]
-                new_boxes[:, b_id+5] = boxes[:, b_id+0]
-                new_boxes[:, b_id+6] = (np.pi - boxes[:, b_id+6]) + np.pi / 2
-                new_boxes[:, b_id+2] += boxes[:, b_id+0] / 2
-            return new_boxes
-
-    def get_registration_angle(self,mat):
-
-        cos_theta=mat[0,0]
-        sin_theta=mat[1,0]
-
-        if  cos_theta < -1:
-            cos_theta = -1
-        if cos_theta > 1:
-            cos_theta = 1
-
-        theta_cos = np.arccos(cos_theta)
-
-        if sin_theta >= 0:
-            return theta_cos
-        else:
-            return 2 * np.pi - theta_cos
-
-    def register_bbs(self,boxes,pose):
-
-        ang = self.get_registration_angle(pose)
-
-        t_id = boxes.shape[1] // 7
-        ones = np.ones(shape=(boxes.shape[0],1))
-        for i in range(t_id):
-            b_id = i * 7
-            box_xyz = boxes[:,b_id:b_id+3]
-            box_xyz1 = np.concatenate([box_xyz,ones],-1)
-            box_world = np.matmul(box_xyz1,pose.T)
-            boxes[:,b_id:b_id+3] = box_world[:,0:3]
-            boxes[:, b_id+6] += ang
-        return boxes
+                return np.array(ids)
 
     def trajectores_prediction(self):
+        """
+        predict the possible state of each active trajectories, if the trajectory is not updated for a while,
+        it will be deleted from the active trajectories set, and moved to dead trajectories set
+        Returns:
 
+        """
         if len(self.active_trajectories) == 0 :
             return
         else:
@@ -129,6 +94,12 @@ class Tracker3D:
                 self.dead_trajectories[id]=tra
 
     def compute_cost_map(self):
+        """
+        compute the cost map between detections and predictions
+        Returns:
+              cost, array(N,M), where N is the number of detections, M is the number of active trajectories
+              all_ids, list(M,), the corresponding IDs of active trajectories
+        """
         all_ids = []
 
         all_predictions = []
@@ -156,7 +127,6 @@ class Tracker3D:
                  init_score=score,
                  init_timestamp=self.current_timestamp,
                  label=label,
-                 tracking_bb_size=self.tracking_bb_size,
                  tracking_features=self.tracking_features,
                  bb_as_features=self.bb_as_features)
 
@@ -184,7 +154,11 @@ class Tracker3D:
         return cost,all_ids
 
     def association(self):
-
+        """
+        greedy assign the IDs for detected state based on the cost map
+        Returns:
+            ids, list(N,), assigned IDs for boxes, where N is the input boxes number
+        """
         if len(self.active_trajectories) == 0:
             ids = []
             for i in range(len(self.current_bbs)):
@@ -198,7 +172,7 @@ class Tracker3D:
                 min = np.min(cost_map[i])
                 arg_min = np.argmin(cost_map[i])
 
-                if min<config.assign_threshold:
+                if min<2:
                     ids.append(all_ids[arg_min])
                     cost_map[:,arg_min] = 100000
                 else:
@@ -208,6 +182,11 @@ class Tracker3D:
 
 
     def trajectories_update_init(self,ids):
+        """
+        update a exiting trajectories based on the association results, or init a new trajectory
+        Args:
+            ids: list or array(N), the assigned ids for boxes
+        """
         assert len(ids) == len(self.current_bbs)
 
         for i in range(len(self.current_bbs)):
@@ -231,22 +210,30 @@ class Tracker3D:
                                      init_score=score,
                                      init_timestamp=self.current_timestamp,
                                      label=label,
-                                     tracking_bb_size=self.tracking_bb_size,
                                      tracking_features=self.tracking_features,
                                      bb_as_features=self.bb_as_features)
                 self.active_trajectories[label] = new_tra
 
 
-    def post_processing(self):
+    def post_processing(self, filtering = False):
+        """
+        globally filter the trajectories
+        Args:
+            filtering: bool
 
+        Returns: dict(Trajectory)
+
+        """
         tra = {}
         for key in self.dead_trajectories.keys():
             track = self.dead_trajectories[key]
-            track.filtering()
+            if filtering:
+                track.filtering()
             tra[key] = track
         for key in self.active_trajectories.keys():
             track = self.active_trajectories[key]
-            track.filtering()
+            if filtering:
+                track.filtering()
             tra[key] = track
 
         return tra

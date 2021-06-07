@@ -80,7 +80,7 @@ def cam_to_velo(cloud,vtc_mat):
     return T
 
 """
-description: convert 3D camera coordinates to Lidar 3D coordinates.
+description: convert Lidar 3D coordinates to 3D camera coordinates.
 input: (PointsNum,3)
 output: (PointsNum,3)
 """
@@ -88,7 +88,7 @@ def velo_to_cam(cloud,vtc_mat):
     mat=np.ones(shape=(cloud.shape[0],4),dtype=np.float32)
     mat[:,0:3]=cloud[:,0:3]
     mat=np.mat(mat)
-    normal=np.mat(vtc_mat).I
+    normal=np.mat(vtc_mat)
     normal=normal[0:3,0:4]
     transformed_mat = normal * mat.T
     T=np.array(transformed_mat.T,dtype=np.float32)
