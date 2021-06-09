@@ -14,17 +14,17 @@ The overall framework of design is as shown below:
 Results on Kitti tracking val seq [1,6,8,10,12,13,14,15,16,18,19] 
 using point-rcnn detections. 
  
-|HOTA  | DetA  |    AssA  |    DetRe  |   DetPr   |  AssRe  |   AssPr   |  LocA  |    RHOTA |
+|HOTA  | DetA  |    AssA  |    DetRe  |   DetPr   |  AssRe  |   AssPr   |  LocA  |   MOTA|
 |---|---|---|---|---|---|---|---|---|
-|78.913  |  75.815  |  82.412  |  83.466  |  82.21  |   87.209   | 87.591   | 87.306  |  82.921|
+|78.913  |  75.815  |  82.412  |  83.466  |  82.21  |   87.209   | 87.591   | 87.306  |  88.49|
 
-|MOTA|MOTP|Recall|Precision|MT|ML|IDS|Frag|
-|---|---|---|---|---|---|---|---|
-|88.49|86.02|95.95|94.76|89.18|3.78|8|27|
 
 ## Prepare data 
 
-Kitti tracking dataset
+You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
+you can find the point-rcnn detections for Kitti from [here](https://drive.google.com/file/d/1PcAcxN_YNuINMA952ZuDiFNI6CfOU30G/view?usp=sharing).
+
+To run this code, you should organize Kitti tracking dataset as below:
 ```
 # Kitti Tracking Dataset       
 └── kitti_tracking
