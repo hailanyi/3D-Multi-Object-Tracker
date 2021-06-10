@@ -8,8 +8,8 @@ tracking_seqs: [1,6,8,10,12,13,14,15,16,18,19]
 
 tracking_type: "Car"
 
-state_func_covariance: 100
-measure_func_covariance: 0.001
+state_func_covariance: 0.01
+measure_func_covariance: 0.0001
 prediction_score_decay: 0.03
 LiDAR_scanning_frequency: 10
 

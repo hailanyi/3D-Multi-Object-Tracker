@@ -18,8 +18,8 @@ using second-iou and point-rcnn detections. We followed the HOTA metric, and tun
  
 |Detector|HOTA  | DetA  |    AssA  |    DetRe  |   DetPr   |  AssRe  |   AssPr   |  LocA  |   MOTA  |
 |---|---|---|---|---|---|---|---|---|---|
-|second-iou	|78.783	|74.465	|83.618	|80.646	|84.742	|89.017	|88.595	|88.651	|85.082|
-|point-rcnn	|78.885   | 75.764  |  82.41   |  83.567 |   82.04  |  87.2    |  87.59  |   87.305| 88.388|
+|second-iou	|78.787  |  74.482  |  83.611  |  80.665  |  84.72   |  89.022  |  88.575   | 88.63|85.129|
+|point-rcnn	|78.91  |   75.814  |  82.406  |  83.489  |  82.185  |  87.209 |   87.586  |  87.308|88.412|
 
 
 ## Prepare data 

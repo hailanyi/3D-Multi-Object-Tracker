@@ -1,5 +1,5 @@
-dataset_path: "H:/data/tracking/testing"
-detections_path: "data/point_rcnn/testing"
+dataset_path: "H:/data/tracking/training"
+detections_path: "data/point_rcnn/training"
 save_path: 'evaluation/results/sha_key/data'
 
 # val [1,6,8,10,12,13,14,15,16,18,19]
@@ -8,8 +8,8 @@ tracking_seqs: [1,6,8,10,12,13,14,15,16,18,19]
 
 tracking_type: "Car"
 
-state_func_covariance: 0.0008
-measure_func_covariance: 0.00001
+state_func_covariance: 0.01
+measure_func_covariance: 0.0001
 prediction_score_decay: 0.03
 LiDAR_scanning_frequency: 10
 
