@@ -1,16 +1,15 @@
 import numpy as np
 from .object import Object
-from .config import config
 
 class Trajectory:
     def __init__(self,init_bb=None,
                  init_features=None,
                  init_score=None,
                  init_timestamp=None,
-                 init_pose = None,
                  label=None,
                  tracking_features=True,
                  bb_as_features=False,
+                 config = None
                  ):
         """
 
@@ -19,7 +18,6 @@ class Trajectory:
             init_features: array(m), features of box or tracklet
             init_score: array(1) or float, score of detection
             init_timestamp: int, init timestamp
-            init_pose: array(4,4), global pose
             label: int, unique ID for this trajectory
             tracking_features: bool, if track features
             bb_as_features: bool, if treat the bb as features
@@ -35,8 +33,10 @@ class Trajectory:
         self.tracking_features = tracking_features
         self.bb_as_features = bb_as_features
 
+        self.config = config
 
-        self.scanning_interval = 1./config.LiDAR_scanning_frequency
+
+        self.scanning_interval = 1./self.config.LiDAR_scanning_frequency
 
         if self.bb_as_features:
             if self.init_features is None:
@@ -117,8 +117,8 @@ class Trajectory:
         :return:
         """
         self.A = np.mat(np.eye(self.track_dim))
-        self.Q = np.mat(np.eye(self.track_dim))*config.state_func_covariance
-        self.P = np.mat(np.eye(self.track_dim-6))*config.measure_func_covariance
+        self.Q = np.mat(np.eye(self.track_dim))*self.config.state_func_covariance
+        self.P = np.mat(np.eye(self.track_dim-6))*self.config.measure_func_covariance
         self.B = np.mat(np.zeros(shape=(self.track_dim-6,self.track_dim)))
         self.B[0:3,:] = self.A[0:3,:]
         self.B[3:,:] = self.A[9:,:]
@@ -132,9 +132,9 @@ class Trajectory:
 
         self.H = self.B.T
         self.K = np.mat(np.zeros(shape=(self.track_dim,self.track_dim)))
-        self.K[3, 3] = self.scanning_interval
-        self.K[4, 4] = self.scanning_interval
-        self.K[5, 5] = self.scanning_interval
+        self.K[3, 0] = self.scanning_interval
+        self.K[4, 1] = self.scanning_interval
+        self.K[5, 2] = self.scanning_interval
 
     def state_prediction(self,timestamp):
         """
@@ -158,11 +158,11 @@ class Trajectory:
 
         if timestamp-1 in self.trajectory.keys():
             if self.trajectory[timestamp-1].updated_state is not None:
-                current_prediction_score = previous_prediction_score * (1 - config.prediction_score_decay*15)
+                current_prediction_score = previous_prediction_score * (1 - self.config.prediction_score_decay*15)
             else:
-                current_prediction_score = previous_prediction_score * (1 - config.prediction_score_decay)
+                current_prediction_score = previous_prediction_score * (1 - self.config.prediction_score_decay)
         else:
-            current_prediction_score = previous_prediction_score * (1 - config.prediction_score_decay)
+            current_prediction_score = previous_prediction_score * (1 - self.config.prediction_score_decay)
 
 
         current_predicted_state = self.A*previous_state
@@ -227,8 +227,10 @@ class Trajectory:
         updated_covariance = (np.mat(np.eye(self.track_dim)) - KF_gain*self.B)*predicted_covariance
 
         if len(self.trajectory)==2:
+
             updated_state = self.H*detected_state_template+\
                             self.K*(self.H*detected_state_template-self.trajectory[timestamp-1].updated_state)
+
 
         current_ob.updated_state = updated_state
         current_ob.updated_covariance = updated_covariance
@@ -240,23 +242,26 @@ class Trajectory:
         self.consecutive_missed_num = 0
         self.last_updated_timestamp = timestamp
 
-    def filtering(self,):
+    def filtering(self,config):
         """
         globally filtering the trajectory
         """
-        detected_num = 0
+        detected_num = 0.00001
         score_sum = 0
 
         for key in self.trajectory.keys():
             ob = self.trajectory[key]
-            if ob.score is not None:
-                detected_num+=1
-                score_sum+=ob.score
-            if self.first_updated_timestamp<=key<=self.last_updated_timestamp and ob.updated_state is None:
-                ob.updated_state = ob.predicted_state
+            if config.avg_score:
+                if ob.score is not None:
+                    detected_num+=1
+                    score_sum+=ob.score
+            if config.rec_misses:
+                if self.first_updated_timestamp<=key<=self.last_updated_timestamp and ob.updated_state is None:
+                    ob.updated_state = ob.predicted_state
 
         score = score_sum/detected_num
 
-        for key in self.trajectory.keys():
-            ob = self.trajectory[key]
-            ob.score = score
+        if config.avg_score:
+            for key in self.trajectory.keys():
+                ob = self.trajectory[key]
+                ob.score = score

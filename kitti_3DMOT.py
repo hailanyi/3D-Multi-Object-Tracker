@@ -4,32 +4,31 @@ from tracker.tracker import Tracker3D
 import time
 import tqdm
 import os
-from tracker.config import config
+from tracker.config import cfg, cfg_from_yaml_file
 from tracker.box_op import *
 import numpy as np
+import argparse
 
 from evaluation_HOTA.scripts.run_kitti import eval_kitti
 
-def track_one_seq(seq_id,
-                  dataset_path,
-                  detections_path,
-                  tracking_type):
+def track_one_seq(seq_id,config):
+
     """
     tracking one sequence
     Args:
         seq_id: int, the sequence id
-        dataset_path: str, the tracking data set path
-        detections_path: str, the detection results path
-        tracking_type: str, object type, "Car", "Pedestrian", "Cyclists"
-
+        config: config
     Returns: dataset: KittiTrackingDataset
              tracker: Tracker3D
              all_time: float, all tracking time
              frame_num: int, num frames
     """
+    dataset_path = config.dataset_path
+    detections_path = config.detections_path
+    tracking_type = config.tracking_type
     detections_path += "/" + str(seq_id).zfill(4)
 
-    tracker = Tracker3D(box_type="Kitti", tracking_features=False)
+    tracker = Tracker3D(box_type="Kitti", tracking_features=False, config = config)
     dataset = KittiTrackingDataset(dataset_path, seq_id=seq_id, ob_path=detections_path,type=[tracking_type])
 
     all_time = 0
@@ -58,19 +57,20 @@ def track_one_seq(seq_id,
 def save_one_seq(dataset,
                  seq_id,
                  tracker,
-                 save_path,
-                 tracking_type):
+                 config):
     """
     saving tracking results
     Args:
         dataset: KittiTrackingDataset, Iterable dataset object
         seq_id: int, sequence id
         tracker: Tracker3D
-        save_path: str,
-        tracking_type: str,
     """
-    tracks = tracker.post_processing(config.globally)
 
+    save_path = config.save_path
+    tracking_type = config.tracking_type
+    s =time.time()
+    tracks = tracker.post_processing(config)
+    proc_time = s-time.time()
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
@@ -79,12 +79,15 @@ def save_one_seq(dataset,
     frame_first_dict = {}
     for ob_id in tracks.keys():
         track = tracks[ob_id]
+
         for frame_id in track.trajectory.keys():
+
             ob = track.trajectory[frame_id]
             if ob.updated_state is None:
                 continue
             if ob.score<config.post_score:
                 continue
+
             if frame_id in frame_first_dict.keys():
                 frame_first_dict[frame_id][ob_id]=(np.array(ob.updated_state.T),ob.score)
             else:
@@ -117,27 +120,36 @@ def save_one_seq(dataset,
                     print('%d %d %s -1 -1 -10 %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f'
                           % (i,ob_id,tracking_type,box2d[0][0],box2d[0][1],box2d[0][2],
                              box2d[0][3],box[5],box[4],box[3],box[0],box[1],box[2],box[6],score),file = f)
+    return proc_time
 
 
-def tracking_val_seq():
-    dataset_path = "H:/data/tracking/training"            # the kitti tracking dataset root path
-    detections_path = "data/point-rcnn/training"           # the detection results path
-    save_path = 'evaluation/results/sha_key/data' # the results saving path
+def tracking_val_seq(arg):
 
-    tracking_type = "Car"
+    yaml_file = arg.cfg_file
+
+    config = cfg_from_yaml_file(yaml_file,cfg)
+
+    print("\nconfig file:", yaml_file)
+    print("data path: ", config.dataset_path)
+    print('detections path: ', config.detections_path)
+
+    save_path = config.save_path                       # the results saving path
 
     os.makedirs(save_path,exist_ok=True)
 
-    seq_list = [1,6,8,10,12,13,14,15,16,18,19]    # the tracking sequences
+    seq_list = config.tracking_seqs    # the tracking sequences
+
+    print("tracking seqs: ", seq_list)
 
     all_time,frame_num = 0,0
 
     for id in tqdm.trange(len(seq_list)):
         seq_id = seq_list[id]
-        dataset,tracker, this_time, this_num = track_one_seq(seq_id,dataset_path,detections_path,tracking_type)
-        save_one_seq(dataset,seq_id,tracker,save_path,tracking_type)
+        dataset,tracker, this_time, this_num = track_one_seq(seq_id,config)
+        proc_time = save_one_seq(dataset,seq_id,tracker,config)
 
         all_time+=this_time
+        all_time+=proc_time
         frame_num+=this_num
 
     print("Tracking time: ",all_time)
@@ -148,5 +160,9 @@ def tracking_val_seq():
     eval_kitti()
 
 if __name__ == '__main__':
-    tracking_val_seq()
+    parser = argparse.ArgumentParser(description='arg parser')
+    parser.add_argument('--cfg_file', type=str, default="config/point_rcnn_mot.yaml",
+                        help='specify the config for tracking')
+    args = parser.parse_args()
+    tracking_val_seq(args)
 
