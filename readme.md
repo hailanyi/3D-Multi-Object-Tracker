@@ -5,8 +5,8 @@ implementation of [paper](https://ieeexplore.ieee.org/abstract/document/9352500)
 ![](./doc/demo.gif)
 ## Features
 
-* Fast: currently, the codes can achieve 700 FPS using only CPU (not include data op), can perform tracking 
-on all kitti sequence in several seconds. 
+* Fast: currently, the codes can achieve 700 FPS using only CPU (not include detection and data op), can perform tracking 
+on all kitti val sequence in several seconds. 
 * Support both online and global implementation. 
 The overall framework of design is shown below:
 ![](./doc/framework.jpg)
@@ -78,6 +78,7 @@ Detections
 python3
 numpy
 opencv
+yaml
 ```
 
 ## Quick start
