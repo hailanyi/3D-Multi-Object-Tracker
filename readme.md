@@ -1,6 +1,5 @@
 # 3D Multi-Object Tracker
-This project is developed for tracking multiple objects in 3D scene, and is a simplified
-implementation of [paper](https://ieeexplore.ieee.org/abstract/document/9352500). The visualization code is from
+This project is developed for tracking multiple objects in 3D scene. The visualization code is from
 [here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer).
 ![](./doc/demo.gif)
 ## Features
@@ -24,7 +23,7 @@ using second-iou and point-rcnn detections. We followed the HOTA metric, and tun
 
 ## Prepare data 
 You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
-you can find the point-rcnn and second-iou detections from [here](https://drive.google.com/file/d/1DQ1goFvfHRTYdfy5UqWpKRMxU_dsFi8i/view?usp=sharing).
+you can find the point-rcnn and second-iou detections from [here](https://drive.google.com/file/d/164CJbqV-ihATe5RZsyr-lrGqa5MPxLM0/view?usp=sharing).
 
 To run this code, you should organize Kitti tracking dataset as below:
 ```
