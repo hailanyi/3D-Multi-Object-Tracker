@@ -152,7 +152,7 @@ def tracking_val_seq(arg):
         all_time+=proc_time
         frame_num+=this_num
 
-    print("Tracking time: ",all_time)
+    print("Tracking time: ", all_time)
     print("Tracking frames: ", frame_num)
     print("Tracking FPS:", frame_num/all_time)
     print("Tracking ms:", all_time/frame_num)
@@ -161,7 +161,7 @@ def tracking_val_seq(arg):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='arg parser')
-    parser.add_argument('--cfg_file', type=str, default="config/point_rcnn_mot.yaml",
+    parser.add_argument('--cfg_file', type=str, default="config/global/second_iou_mot.yaml",
                         help='specify the config for tracking')
     args = parser.parse_args()
     tracking_val_seq(args)

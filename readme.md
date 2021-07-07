@@ -2,28 +2,32 @@
 This project is developed for tracking multiple objects in 3D scene. The visualization code is from
 [here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer).
 ![](./doc/demo.gif)
-## Features
 
+## Features
 * Fast: currently, the codes can achieve 700 FPS using only CPU (not include detection and data op), can perform tracking 
 on all kitti val sequence in several seconds. 
-* Support both online and global implementation. 
+* Support online, near online and global implementation. 
 The overall framework of design is shown below:
 ![](./doc/framework.jpg)
 
 ## Kitti Results
-Results on the Kitti tracking val seq [1,6,8,10,12,13,14,15,16,18,19] 
-using second-iou and point-rcnn detections. We followed the HOTA metric, and tuned the parameters
- in this code by firstly considering the HOTA performance.
+**Car/Pedestrian** tracking results on the Kitti tracking val seq [1,6,8,10,12,13,14,15,16,18,19] 
+using second-iou, point-rcnn and pv-rcnn detections. We also followed the **HOTA** metric, and tuned the parameters by first 
+considering the **HOTA** performance. 
+
+|Detector|online|near online (latency=2s)|global|
+|:---:|:---:|:---:|:---:|
+|point-rcnn|76.653|77.576|78.853|
+|second-iou|77.29/48.011|78.17/50.362|78.799/51.20|
+|pv-rcnn|78.289/49.662|79.48/50.824|80.075/51.753|
+
+ Online: CA-based KF + greedy matching. 
+ Near online: online + rescoring tracks in a temporal window.
+ Global: online + rescoring tracks globally.
  
-|Detector|HOTA  | DetA  |    AssA  |    DetRe  |   DetPr   |  AssRe  |   AssPr   |  LocA  |   MOTA  |
-|---|---|---|---|---|---|---|---|---|---|
-|second-iou	|78.787  |  74.482  |  83.611  |  80.665  |  84.72   |  89.022  |  88.575   | 88.63|85.129|
-|point-rcnn	|78.91  |   75.814  |  82.406  |  83.489  |  82.185  |  87.209 |   87.586  |  87.308|88.412|
-
-
 ## Prepare data 
 You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
-you can find the point-rcnn and second-iou detections from [here](https://drive.google.com/file/d/164CJbqV-ihATe5RZsyr-lrGqa5MPxLM0/view?usp=sharing).
+you can download the point-rcnn, second-iou and pv-rcnn detections from [here](https://drive.google.com/file/d/1zVWFGwRqF_CBP4DFJJa4nBcu-z6kpF1R/view?usp=sharing).
 
 To run this code, you should organize Kitti tracking dataset as below:
 ```
@@ -81,10 +85,10 @@ yaml
 ```
 
 ## Quick start
-* Please modify the dataset path and detections path in the [yaml file](./config/point_rcnn_mot.yaml) 
+* Please modify the dataset path and detections path in the [yaml file](./config/online/pvrcnn_mot.yaml) 
 to your own path.
-* Then run ``` python3 kitti_3DMOT.py config/point_rcnn_mot.yaml``` 
-* The results are automatically saved to ```evaluation\results\sha_key\data```, and 
+* Then run ``` python3 kitti_3DMOT.py config/online/pvrcnn_mot.yaml``` 
+* The results are automatically saved to ```evaluation/results/sha_key/data```, and 
 evaluated by HOTA metrics.
 
 ## Notes

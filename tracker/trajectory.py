@@ -244,24 +244,48 @@ class Trajectory:
 
     def filtering(self,config):
         """
-        globally filtering the trajectory
+        filtering the trajectory in a global or near online way
         """
-        detected_num = 0.00001
-        score_sum = 0
 
-        for key in self.trajectory.keys():
-            ob = self.trajectory[key]
-            if config.avg_score:
+        wind_size = int(config.LiDAR_scanning_frequency*config.latency)
+
+        if wind_size <0:
+
+            detected_num = 0.00001
+            score_sum = 0
+
+            for key in self.trajectory.keys():
+                ob = self.trajectory[key]
                 if ob.score is not None:
                     detected_num+=1
                     score_sum+=ob.score
-            if config.rec_misses:
                 if self.first_updated_timestamp<=key<=self.last_updated_timestamp and ob.updated_state is None:
                     ob.updated_state = ob.predicted_state
 
-        score = score_sum/detected_num
-
-        if config.avg_score:
+            score = score_sum/detected_num
             for key in self.trajectory.keys():
                 ob = self.trajectory[key]
                 ob.score = score
+
+        else:
+            keys = list(self.trajectory.keys())
+
+            for key in keys:
+
+                min_key = int(key-wind_size)
+                max_key = int(key+wind_size)
+                detected_num = 0.00001
+                score_sum = 0
+                for key_i in range(min_key,max_key):
+                    if key_i not in self.trajectory:
+                        continue
+                    ob = self.trajectory[key_i]
+                    if ob.score is not None:
+                        detected_num+=1
+                        score_sum+=ob.score
+                    if self.first_updated_timestamp<=key_i<=self.last_updated_timestamp and ob.updated_state is None:
+                        ob.updated_state = ob.predicted_state
+
+                score = score_sum / detected_num
+                if wind_size!=0:
+                    self.trajectory[key].score=score
