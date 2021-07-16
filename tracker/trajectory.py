@@ -177,6 +177,9 @@ class Trajectory:
         self.trajectory[timestamp] = new_ob
         self.consecutive_missed_num += 1
 
+    def sigmoid(self,x):
+        return 1.0/(1+np.exp(-float(x)))
+
     def state_update(self,
                      bb=None,
                      features=None,
@@ -235,7 +238,12 @@ class Trajectory:
         current_ob.updated_state = updated_state
         current_ob.updated_covariance = updated_covariance
         current_ob.detected_state = detected_state_template
-        current_ob.prediction_score = 1
+        if self.consecutive_missed_num>1:
+            current_ob.prediction_score = 1
+        elif self.trajectory[timestamp - 1].updated_state is not None:
+            current_ob.prediction_score = current_ob.prediction_score + self.config.prediction_score_decay*10*(self.sigmoid(score))
+        else:
+            current_ob.prediction_score = current_ob.prediction_score + self.config.prediction_score_decay*(self.sigmoid(score))
         current_ob.score = score
         current_ob.features = features
 
