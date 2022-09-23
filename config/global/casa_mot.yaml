@@ -1,0 +1,33 @@
+# dataset info
+dataset_path: "L:/data/kitti/tracking/training"
+detections_path: "data/casa/training"
+save_path: 'evaluation/results/sha_key/data'
+
+# val [1,6,8,10,12,13,14,15,16,18,19]
+# trainval [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+# test [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+tracking_seqs: [1,6,8,10,12,13,14,15,16,18,19]
+
+# tracking type
+tracking_type: "Car"
+
+# KF parameters
+state_func_covariance: 100
+measure_func_covariance: 0.001
+prediction_score_decay: 0.02
+LiDAR_scanning_frequency: 10
+
+# max prediction number of state function
+max_prediction_num: 12
+max_prediction_num_for_new_object: 4
+
+# detection score threshold
+input_score: 0
+init_score: 0
+update_score: 0
+post_score: 1.6
+
+# tracking latency (s)
+# -1: global tracking
+# 0.->500: online or near online tracking
+latency: -1
