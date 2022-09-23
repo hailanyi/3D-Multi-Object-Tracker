@@ -25,6 +25,15 @@ considering the **HOTA** performance.
  Online: CA-based KF + greedy matching. 
  Near online: online + rescoring tracks in a temporal window.
  Global: online + rescoring tracks globally.
+
+## Tracker Update 
+
+* Update CasTrack (2022/9/23), the detections are obtained by [CasA detector](https://github.com/hailanyi/CasA) trained on KITTI 3D detection trainval set.
+
+|Detector|online|near online (latency=2s)|global|detections (training & testing set)|
+|:---:|:---:|:---:|:---:|:---:|
+|[CasA](https://github.com/hailanyi/CasA)|82.59|83.24|83.34| [detections(40M)](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
+ 
  
 ## Prepare data 
 You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
