@@ -1,7 +1,7 @@
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=hailanyi/3D-Multi-Object-Tracker)
 # 3D Multi-Object Tracker
 This project is developed for tracking multiple objects in 3D scene. The visualization code is from
-[here](https://github.com/hailanyi/kitti_waymo_3D_detection_tracking_viewer).
+[here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer).
 ![](./doc/demo.gif)
 
 ## Features
