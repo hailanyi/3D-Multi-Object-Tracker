@@ -17,8 +17,8 @@ class Kitti2DBox(_BaseDataset):
         """Default class config values"""
         code_path = utils.get_code_path()
         default_config = {
-            'GT_FOLDER': os.path.join(code_path, '../evaluation/data/tracking'),  # Location of GT data
-            'TRACKERS_FOLDER': os.path.join(code_path, '../evaluation/results'),  # Trackers location
+            'GT_FOLDER': os.path.join('evaluation/data/tracking'),  # Location of GT data
+            'TRACKERS_FOLDER': os.path.join('evaluation/results'),  # Trackers location
             'OUTPUT_FOLDER': None,  # Where to save eval results (if None, same as TRACKERS_FOLDER)
             'TRACKERS_TO_EVAL': None,  # Filenames of trackers to eval (if None, all in folder)
             'CLASSES_TO_EVAL': ['car'],  # Valid: ['car', 'pedestrian']
