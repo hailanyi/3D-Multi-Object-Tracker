@@ -31,7 +31,7 @@ considering the **HOTA** performance.
 
 ## Tracker Update 
 
-* Update CasTrack (2022/9/23), the detections are obtained by [CasA detector](https://github.com/hailanyi/CasA) trained on KITTI 3D detection trainval set.
+* 2022/9/23 Update CasTrack. The detections are obtained by [CasA detector](https://github.com/hailanyi/CasA) trained on KITTI 3D detection trainval set. Currently **rank first** on the KITTI tracking dataset :fire:!
 
 |Detector|online|near online (latency=2s)|global|detections (training & testing set)|
 |:---:|:---:|:---:|:---:|:---:|
