@@ -2,7 +2,7 @@
 # 3D Multi-Object Tracker
 This project is developed for tracking multiple objects in 3D scene. The visualization code is from
 [here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer). This is a re-produced and simplified version of [paper](https://ieeexplore.ieee.org/abstract/document/9352500). 
-To keep simplelicity and support more detectors, this code did not use deep features and some not very useful association tricks (~%0.5 HOTA gap).
+To keep simplicity and support more detectors, this code did not use deep features and some not very useful association tricks (~%0.5 HOTA gap).
 
 ![](./doc/demo.gif)
 
