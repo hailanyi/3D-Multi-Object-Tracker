@@ -1,8 +1,7 @@
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=hailanyi/3D-Multi-Object-Tracker)
 # 3D Multi-Object Tracker
 This project is developed for tracking multiple objects in 3D scene. The visualization code is from
-[here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer). This is a re-produced and simplified version of [paper](https://ieeexplore.ieee.org/abstract/document/9352500). 
-To keep simplicity and support more detectors, this code did not use deep features and some not very useful association tricks (~%0.5 HOTA gap).
+[here](https://github.com/hailanyi/3D-Detection-Tracking-Viewer). This is a re-produced and simplified version of [paper](https://ieeexplore.ieee.org/abstract/document/9352500). We also made some changes to support more detectors and adapt the HOTA metric.
 We also provided a simple [guide](https://github.com/hailanyi/3D-Multi-Object-Tracker/blob/master/doc/submit.md) to submit results to the KITTI test set. 
 
 ![](./doc/demo.gif)
