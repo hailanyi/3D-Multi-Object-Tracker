@@ -28,6 +28,12 @@ considering the **HOTA** performance.
  Near online: online + rescoring tracks in a temporal window.
  Global: online + rescoring tracks globally.
  
+ * 2022/9/23 Update CasTrack. The detections are obtained by [CasA detector](https://github.com/hailanyi/CasA) trained on KITTI 3D detection trainval set. Currently **rank first** on the KITTI tracking dataset :fire:!
+
+|Detector|online|near online (latency=2s)|global|detections (training & testing set)|
+|:---:|:---:|:---:|:---:|:---:|
+|[CasA](https://github.com/hailanyi/CasA)|82.59|83.24|83.34| [detections download link(40M)](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
+ 
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
 
@@ -39,13 +45,7 @@ considering the **HOTA** performance.
 you can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
 (please note that Waymo open dataset is under strict non-commercial license).
 
-## Tracker Update 
 
-* 2022/9/23 Update CasTrack. The detections are obtained by [CasA detector](https://github.com/hailanyi/CasA) trained on KITTI 3D detection trainval set. Currently **rank first** on the KITTI tracking dataset :fire:!
-
-|Detector|online|near online (latency=2s)|global|detections (training & testing set)|
-|:---:|:---:|:---:|:---:|:---:|
-|[CasA](https://github.com/hailanyi/CasA)|82.59|83.24|83.34| [detections download link(40M)](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
  
  
 ## Prepare data 
