@@ -40,7 +40,8 @@ considering the **HOTA** performance.
 ## Prepare data 
 You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
 you can download the point-rcnn, second-iou and pv-rcnn detections from [here](https://drive.google.com/file/d/1zVWFGwRqF_CBP4DFJJa4nBcu-z6kpF1R/view?usp=sharing).
-You can download the CasA detections(including training & testing set) from [here](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
+You can download the CasA detections(including training & testing set) from [here](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing).
+
 To run this code, you should organize Kitti tracking dataset as below:
 ```
 # Kitti Tracking Dataset       
