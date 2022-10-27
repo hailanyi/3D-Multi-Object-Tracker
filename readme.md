@@ -18,7 +18,7 @@ The overall framework of design is shown below:
 using second-iou, point-rcnn and pv-rcnn detections. We also followed the **HOTA** metric, and tuned the parameters by first 
 considering the **HOTA** performance. 
 
-|Detector|online|near online (latency=2s)|global|
+|detector|online|near online (latency=2s)|global|
 |:---:|:---:|:---:|:---:|
 |point-rcnn|76.653|77.576|78.853|
 |second-iou|77.29/48.011|78.17/50.362|78.799/51.20|
@@ -31,7 +31,7 @@ considering the **HOTA** performance.
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
 
-|set||set|Vehicle_L2|Pedestrian_L2|Cyclist_L2| ALL_NS_L2 |
+|detector|set|Vehicle_L2|Pedestrian_L2|Cyclist_L2| ALL_NS_L2 |
 |:---:||:---:|:---:|:---:|:---:|:---:|
 |CasA|val set|59.30|62.78|61.72|61.27|
 |CasA|test set|63.66|64.79|59.34|62.60|
