@@ -37,16 +37,13 @@ considering the **HOTA** performance.
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
 
+* 2022/9/23  Update CasTrack, currently **ranks third** Waymo tracking benchmark. You can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
+(Please register with waymo before downloading, as the Waymo open dataset is under strict non-commercial license).
+
 |detector|set|Vehicle_L2|Pedestrian_L2|Cyclist_L2| ALL_NS_L2 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |CasA|val set|59.30|62.78|61.72|61.27|
 |CasA|test set|63.66|64.79|59.34|62.60|
-
-you can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
-(please note that Waymo open dataset is under strict non-commercial license).
-
-
- 
  
 ## Prepare data 
 You can download the Kitti tracking pose data from [here](https://drive.google.com/drive/folders/1Vw_Mlfy_fJY6u0JiCD-RMb6_m37QAXPQ?usp=sharing), and
