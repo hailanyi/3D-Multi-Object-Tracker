@@ -27,6 +27,17 @@ considering the **HOTA** performance.
  Online: CA-based KF + greedy matching. 
  Near online: online + rescoring tracks in a temporal window.
  Global: online + rescoring tracks globally.
+ 
+## Waymo Results
+**Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
+
+|set||set|Vehicle_L2|Pedestrian_L2|Cyclist_L2| ALL_NS_L2 |
+|:---:||:---:|:---:|:---:|:---:|:---:|
+|CasA|val set|59.30|62.78|61.72|61.27|
+|CasA|test set|63.66|64.79|59.34|62.60|
+
+you can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
+(please note that Waymo open dataset is under strict non-commercial license).
 
 ## Tracker Update 
 
