@@ -37,7 +37,7 @@ considering the **HOTA** performance.
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
 
-* 2022/9/23  Update CasTrack, currently **ranks third** Waymo tracking benchmark. You can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
+* 2022/9/23  Update CasTrack, currently **ranks third** on Waymo tracking benchmark :fire:! You can download the CasA detections from [here](https://drive.google.com/file/d/1xDTXrKf3azvW0m6e3xMV1PluICRDstPk/view?usp=sharing)
 (Please register with waymo before downloading, as the Waymo open dataset is under strict non-commercial license).
 
 |detector|set|Vehicle_L2|Pedestrian_L2|Cyclist_L2| ALL_NS_L2 |
