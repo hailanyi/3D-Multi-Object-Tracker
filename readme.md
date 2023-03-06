@@ -34,6 +34,12 @@ considering the **HOTA** performance.
 |:---:|:---:|:---:|:---:|:---:|
 |[CasA](https://github.com/hailanyi/CasA)|82.59|83.24|83.34| [detections download link(40M)](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
  
+ * Update VirConvTrack (2022/9/23), the detections are obtained by [VirConv-T detector](https://github.com/hailanyi/VirConv) trained on KITTI 3D detection trainval set.
+
+|Detector|online|near online (latency=2s)|global|detections (training & testing set)|
+|:---:|:---:|:---:|:---:|:---:|
+|[VirConv](https://github.com/hailanyi/VirConv)|85.43|85.72|85.99| [detections download link(8M)](https://drive.google.com/file/d/1i-SM3RWYLzdXTGRnhjTI7vwkk2CHbh7b/view?usp=sharing)
+ 
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
 
