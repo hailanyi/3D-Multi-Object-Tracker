@@ -34,7 +34,7 @@ considering the **HOTA** performance.
 |:---:|:---:|:---:|:---:|:---:|
 |[CasA](https://github.com/hailanyi/CasA)|82.59|83.24|83.34| [detections download link(40M)](https://drive.google.com/file/d/1LaousWNTldOV1IhdcGDRM_UGi5BFWDoN/view?usp=sharing)
  
- * Update VirConvTrack (2022/9/23), the detections are obtained by [VirConv-T detector](https://github.com/hailanyi/VirConv) trained on KITTI 3D detection trainval set.
+ * Update VirConvTrack (2023/3/7), the detections are obtained by [VirConv-T detector](https://github.com/hailanyi/VirConv) trained on KITTI 3D detection trainval set.
 
 |Detector|online|near online (latency=2s)|global|detections (training & testing set)|
 |:---:|:---:|:---:|:---:|:---:|
