@@ -1,6 +1,6 @@
 # dataset info
 dataset_path: "L:/data/kitti/tracking/training"
-detections_path: "data/ted/training"
+detections_path: "data/virconv/training"
 save_path: 'evaluation/results/sha_key/data'
 
 # val [1,6,8,10,12,13,14,15,16,18,19]

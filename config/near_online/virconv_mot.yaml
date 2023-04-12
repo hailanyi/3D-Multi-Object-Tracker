@@ -1,6 +1,6 @@
 # dataset info
 dataset_path: "L:/data/kitti/tracking/training"
-detections_path: "data/ted36/training"
+detections_path: "data/virconv/training"
 save_path: 'evaluation/results/sha_key/data'
 
 # val [1,6,8,10,12,13,14,15,16,18,19]
@@ -25,7 +25,7 @@ max_prediction_num_for_new_object: 3
 input_score: -0.5
 init_score: -0.5
 update_score: -0.5
-post_score: 1.4
+post_score: 0.8
 
 # tracking latency (s)
 # -1: global tracking

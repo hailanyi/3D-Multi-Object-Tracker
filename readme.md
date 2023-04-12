@@ -38,7 +38,7 @@ considering the **HOTA** performance.
 
 |Detector|online|near online (latency=2s)|global|detections (training & testing set)|
 |:---:|:---:|:---:|:---:|:---:|
-|[VirConv](https://github.com/hailanyi/VirConv)|85.43|85.72|85.99| [detections download link(8M)](https://drive.google.com/file/d/1i-SM3RWYLzdXTGRnhjTI7vwkk2CHbh7b/view?usp=sharing)
+|[VirConv](https://github.com/hailanyi/VirConv)|85.40|85.98|86.17| [detections download link(8M)](https://drive.google.com/file/d/1i-SM3RWYLzdXTGRnhjTI7vwkk2CHbh7b/view?usp=sharing)
  
 ## Waymo Results
 **Vehicle/Pedestrian/Cyclist** online tracking results, evaluated by **MOTA/L2** metrics of Waymo benchmark. 
